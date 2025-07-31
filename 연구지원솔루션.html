@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>연구지원솔루션 (RSS) - All-Inclusive R&D 플랫폼</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Custom Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@900&family=Noto+Sans+KR:wght@400;700;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --lightgray: #3c3c3c;
+            /* Dark gray for the light effect on dark background */
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hero-text-animation {
+            animation: text-focus-in 1s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+        }
+
+        @keyframes text-focus-in {
+            0% {
+                filter: blur(12px);
+                opacity: 0;
+            }
+
+            100% {
+                filter: blur(0px);
+                opacity: 1;
+            }
+        }
+
+        /* Transition for elements */
+        #hero-video,
+        #hero-content,
+        #card-container {
+            transition: opacity 1s ease-in-out;
+        }
+
+        /* Card Style */
+        .card-hero {
+            width: 90%;
+            max-width: 1200px;
+            height: auto;
+            padding-top: 11.5rem;
+            padding-bottom: 4rem;
+            padding-left: 2rem;
+            padding-right: 2rem;
+            border-radius: 30px;
+            background: #212121;
+            box-shadow: 15px 15px 30px rgb(25, 25, 25),
+                -15px -15px 30px rgb(60, 60, 60);
+            transform: translateY(-80px);
+        }
+
+        /* --- Initial Button Style (Before video ends) --- */
+        .btn-initial {
+            border: none;
+            display: inline-block;
+            position: relative;
+            padding: 0.7em 2.4em;
+            font-size: 18px;
+            background: transparent;
+            cursor: pointer;
+            user-select: none;
+            overflow: hidden;
+            color: white;
+            z-index: 1;
+            font-family: inherit;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .btn-initial span {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            z-index: -1;
+            border: 4px solid white;
+        }
+
+        .btn-initial span::before {
+            content: "";
+            display: block;
+            position: absolute;
+            width: 0%;
+            /* Initially hidden */
+            height: 500%;
+            background: var(--lightgray);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-60deg);
+            transition: all 0.3s;
+        }
+
+        .btn-initial:hover span::before {
+            transform: translate(-50%, -50%) rotate(-90deg);
+            width: 100%;
+            background: white;
+        }
+
+        .btn-initial:hover {
+            color: black;
+        }
+
+        .btn-initial:active span::before {
+            background: #c5c5c5;
+        }
+
+        /* --- Final Button Style (After video ends) --- */
+        .btn-final {
+            height: 3.5rem;
+            width: 13.2rem;
+            border-radius: 5px;
+            border: 5px solid rgb(255, 255, 255);
+            cursor: pointer;
+            filter: drop-shadow(0px 0px 10px rgb(255, 255, 255));
+            animation: flickering 2s linear infinite both;
+            text-transform: uppercase;
+            background-color: transparent;
+            color: rgb(234, 234, 234);
+            font-weight: 700;
+            transition: 0.6s;
+            box-shadow: 0px 0px 60px #1f4c65;
+            -webkit-box-reflect: below 10px linear-gradient(to bottom, rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.4));
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            text-decoration: none;
+        }
+
+        @keyframes flickering {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            41.99% {
+                opacity: 1;
+            }
+
+            42% {
+                opacity: 0;
+            }
+
+            43% {
+                opacity: 0;
+            }
+
+            43.01% {
+                opacity: 1;
+            }
+
+            47.99% {
+                opacity: 1;
+            }
+
+            48% {
+                opacity: 0;
+            }
+
+            49% {
+                opacity: 0;
+            }
+
+            49.01% {
+                opacity: 1;
+            }
+        }
+
+        .btn-final:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 0;
+        }
+
+        /* --- Rotating Card Styles (Section 3) --- */
+        .rotating-card-wrapper {
+            width: 100%;
+            height: 100%;
+            min-height: 350px;
+            position: relative;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .rotating-card-inner {
+            --w: 140px;
+            --h: 180px;
+            --translateZ: 220px;
+            --rotateX: -15deg;
+            --perspective: 1000px;
+            position: absolute;
+            width: var(--w);
+            height: var(--h);
+            z-index: 2;
+            transform-style: preserve-3d;
+            transform: perspective(var(--perspective));
+            animation: rotating 25s linear infinite;
+        }
+
+        @keyframes rotating {
+            from {
+                transform: perspective(var(--perspective)) rotateX(var(--rotateX)) rotateY(0);
+            }
+
+            to {
+                transform: perspective(var(--perspective)) rotateX(var(--rotateX)) rotateY(1turn);
+            }
+        }
+
+        .rotating-card {
+            --color-card: 48, 105, 255;
+            position: absolute;
+            border: 2px solid rgba(var(--color-card), 0.8);
+            border-radius: 12px;
+            overflow: hidden;
+            inset: 0;
+            transform: rotateY(calc((360deg / var(--quantity)) * var(--index))) translateZ(var(--translateZ));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .rotating-card .img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background: #0000 radial-gradient(circle,
+                    rgba(var(--color-card), 0.2) 0%,
+                    rgba(var(--color-card), 0.6) 80%,
+                    rgba(var(--color-card), 0.9) 100%);
+            z-index: -1;
+        }
+
+        .rotating-card .card-text {
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: center;
+            word-break: keep-all;
+        }
+
+        /* --- Auto-Scrolling Slider Styles (Section 4) --- */
+        .auto-slider {
+            width: 100%;
+            height: var(--height);
+            overflow: hidden;
+            mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+        }
+
+        .auto-slider .list {
+            display: flex;
+            width: 100%;
+            min-width: calc(var(--width) * var(--quantity));
+            position: relative;
+        }
+
+        .auto-slider .list .item {
+            width: var(--width);
+            height: var(--height);
+            position: absolute;
+            left: 100%;
+            animation: autoRun 15s linear infinite;
+            transition: filter 0.5s;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid #eee;
+            background-color: white;
+            animation-delay: calc((15s / var(--quantity)) * (var(--position) - 1) - 15s) !important;
+        }
+
+        .auto-slider:not([reverse="true"]) .list .item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            box-sizing: border-box;
+        }
+
+        .auto-slider[reverse="true"] .list .item img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        @keyframes autoRun {
+            from {
+                left: 100%;
+            }
+
+            to {
+                left: calc(var(--width) * -1);
+            }
+        }
+
+        .auto-slider:hover .item {
+            animation-play-state: paused !important;
+            filter: grayscale(1);
+        }
+
+        .auto-slider .item:hover {
+            filter: grayscale(0);
+        }
+
+        .auto-slider[reverse="true"] .item {
+            animation: reversePlay 15s linear infinite;
+            animation-delay: calc((15s / var(--quantity)) * (var(--position) - 1) - 15s) !important;
+        }
+
+        @keyframes reversePlay {
+            from {
+                left: calc(var(--width) * -1);
+            }
+
+            to {
+                left: 100%;
+            }
+        }
+
+        /* --- Section 5: Timeline Styles --- */
+        .timeline-item {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .timeline-item.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .process-card {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            background-color: #f2f2f2;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            perspective: 1000px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.6s ease-in-out;
+        }
+
+        .process-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .process-card__image {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.6s ease-in-out;
+        }
+
+        .process-card:hover .process-card__image {
+            transform: scale(0);
+        }
+
+        .process-card__content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: #f2f2f2;
+            transform: rotateX(-90deg);
+            transform-origin: bottom;
+            transition: all 0.6s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .process-card:hover .process-card__content {
+            transform: rotateX(0deg);
+        }
+
+        .process-card__title {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .process-card__description {
+            margin: 10px 0 0;
+            font-size: 14px;
+            color: #777;
+            line-height: 1.4;
+            text-align: center;
+        }
+
+        .timeline-dot-inner {
+            background-color: white;
+            border: 2px solid #d1d5db;
+            /* gray-300 */
+            transition: background-color 0.5s ease, border-color 0.5s ease;
+        }
+
+        .timeline-dot.is-active .timeline-dot-inner {
+            background-color: #2563eb;
+            /* blue-600 */
+            border-color: #2563eb;
+        }
+
+        /* --- Section 6: Benefit Card Styles --- */
+        .benefit-card-container {
+            display: flex;
+            gap: 40px;
+            width: 100%;
+            overflow-x: auto;
+            padding-bottom: 20px;
+        }
+
+        .benefit-card {
+            position: relative;
+            width: 250px;
+            height: 280px;
+            border-radius: 14px;
+            z-index: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 10px 10px 30px #e0e0e0, -10px -10px 30px #ffffff;
+            /* 그림자 약하게 */
+            flex-shrink: 0;
+        }
+
+        .benefit-card .bg {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            width: calc(100% - 10px);
+            height: calc(100% - 10px);
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.9);
+            /* 투명도 약하게 */
+            backdrop-filter: blur(8px);
+            /* 블러 약하게 */
+            border-radius: 10px;
+            overflow: hidden;
+            outline: 2px solid white;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .benefit-card .card-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #1A202C;
+            margin-bottom: 1rem;
+            letter-spacing: -0.05em;
+        }
+
+        .benefit-card .card-description {
+            font-size: 1rem;
+            color: #4A5568;
+            line-height: 1.6;
+        }
+
+        .benefit-card .blob {
+            position: absolute;
+            z-index: 1;
+            top: 50%;
+            left: 50%;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            opacity: 0.5;
+            /* 투명도 약하게 */
+            filter: blur(15px);
+            /* 블러 약하게 */
+            animation: blob-bounce 8s infinite ease;
+        }
+
+        .benefit-card:nth-child(1) .blob {
+            background-color: #1e3a8a;
+            animation-delay: 0s;
+        }
+
+        .benefit-card:nth-child(2) .blob {
+            background-color: #2563eb;
+            animation-delay: -2s;
+        }
+
+        .benefit-card:nth-child(3) .blob {
+            background-color: #3b82f6;
+            animation-delay: -4s;
+        }
+
+        .benefit-card:nth-child(4) .blob {
+            background-color: #60a5fa;
+            animation-delay: -6s;
+        }
+
+        .highlight {
+            position: relative;
+            display: inline-block;
+        }
+
+        .highlight::after {
+            content: '';
+            position: absolute;
+            left: -0.2em;
+            right: -0.2em;
+            bottom: 0.05em;
+            height: 0.4em;
+            z-index: -1;
+            opacity: 0.7;
+            transform: rotate(-2deg);
+            border-radius: 3px;
+            background-color: #60a5fa;
+        }
+
+        @keyframes blob-bounce {
+            0% {
+                transform: translate(-100%, -100%) translate3d(0, 0, 0);
+            }
+
+            25% {
+                transform: translate(-100%, -100%) translate3d(100%, 0, 0);
+            }
+
+            50% {
+                transform: translate(-100%, -100%) translate3d(100%, 100%, 0);
+            }
+
+            75% {
+                transform: translate(-100%, -100%) translate3d(0, 100%, 0);
+            }
+
+            100% {
+                transform: translate(-100%, -100%) translate3d(0, 0, 0);
+            }
+        }
+
+        /* --- Section 7: Organic Card Styles --- */
+        .organic-card {
+            width: 200px;
+            height: 200px;
+            background-color: #f9fafb;
+            /* bg-gray-50 */
+            box-shadow: inset 10px 10px 10px rgba(0, 0, 0, 0.05),
+                15px 25px 20px rgba(0, 0, 0, 0.05),
+                15px 20px 30px rgba(0, 0, 0, 0.05),
+                inset -10px -10px 15px rgba(255, 255, 255, 0.9);
+            border-radius: 51% 49% 62% 38% / 53% 51% 49% 47%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .organic-card::after {
+            content: "";
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.842);
+            border-radius: 80% 20% 91% 9% / 48% 67% 33% 52%;
+            top: 40px;
+            left: 40px;
+        }
+
+        .organic-card::before {
+            content: "";
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.842);
+            border-radius: 48% 52% 45% 55% / 48% 67% 33% 52%;
+            top: 35px;
+            left: 60px;
+        }
+
+        .organic-card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e3a8a;
+            position: relative;
+            z-index: 2;
+        }
+    </style>
+</head>
+
+<body class="bg-white text-gray-800">
+
+    <main>
+        <!-- [섹션 1] Hero Section (Card UI) -->
+        <section id="hero"
+            class="h-screen flex items-center justify-center text-center text-white relative overflow-hidden bg-black">
+            <!-- Video Container (Layer 0) -->
+            <div class="absolute inset-0 z-0">
+                <!-- Video Element -->
+                <video id="hero-video" autoplay muted playsinline
+                    class="absolute top-0 left-0 w-full h-full object-cover">
+                    <source src="https://i.imgur.com/eYvSB11.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <!-- Video Overlay -->
+                <div id="video-overlay"
+                    class="absolute inset-0 bg-gray-900 opacity-70 transition-opacity duration-1000"></div>
+            </div>
+
+            <!-- Card Container (Layer 1) -->
+            <div id="card-container"
+                class="absolute inset-0 flex items-center justify-center z-10 opacity-0 pointer-events-none">
+                <div class="card-hero">
+                    <!-- Card content can go here if needed in the future -->
+                </div>
+            </div>
+
+            <!-- Hero Content (Layer 2 - Topmost) -->
+            <div id="hero-content" class="relative z-20 p-4 hero-text-animation">
+                <h1 class="text-4xl md:text-6xl font-black leading-tight mb-10"
+                    style="text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">
+                    머리 속 아이디어를,<br>논문 속 데이터로 실현시켜드립니다.
+                </h1>
+                <h3 class="text-2xl md:text-3xl font-bold mb-24" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">
+                    All-Inclusive R&D 플랫폼, 연구지원솔루션(RSS)
+                </h3>
+                <div class="mt-0">
+                    <a href="#contact" id="btn-contact" class="btn-initial mx-2">프로젝트 문의하기<span></span></a>
+                    <a href="#solution" id="btn-about" class="btn-initial mx-2">About us<span></span></a>
+                </div>
+            </div>
+        </section>
+
+        <!-- [섹션 2] The Problem Section -->
+        <section id="problem" class="py-20 bg-white">
+            <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-8">
+                    <div class="md:col-span-1">
+                        <h2 class="text-3xl font-bold text-gray-900 sm:text-4xl fade-in">
+                            하나의 연구가 완성되기까지,<br>
+                            연구자는 수많은 장벽과<br>
+                            마주합니다.
+                        </h2>
+                    </div>
+                    <div class="md:col-span-1 text-center">
+                        <div class="space-y-4 text-xl text-gray-600 leading-relaxed">
+                            <p class="fade-in" style="transition-delay: 200ms;">"이 업체는 믿을 수 있는가?"</p>
+                            <p class="fade-in" style="transition-delay: 400ms;">"경험은 풍부한가?"</p>
+                            <p class="fade-in" style="transition-delay: 600ms;">"필요한 인프라는 모두 갖추었나?"</p>
+                            <p class="fade-in" style="transition-delay: 800ms;">"내 연구처럼 책임지고 총괄해 줄 곳은 없는가?"</p>
+                        </div>
+                    </div>
+                    <div class="md:col-span-2 text-center mt-16">
+                        <p class="text-2xl text-gray-800 font-semibold leading-relaxed relative fade-in"
+                            style="top: -5px; transition-delay: 1000ms;">
+                            이 모든 질문은 결국 '경험', '자원', '통합 관리'의 부재라는 단 하나의 거대한 장벽을 가리키고 있었습니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- [섹션 3] The Solution Section -->
+        <section id="solution" class="py-20 bg-white">
+            <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 gap-8 lg:grid-cols-5 lg:gap-16 items-center">
+                    <div class="lg:col-span-2 lg:h-full fade-in">
+                        <div class="rotating-card-wrapper">
+                            <div class="rotating-card-inner" style="--quantity: 10;">
+                                <div class="rotating-card" style="--index: 0; --color-card: 255, 99, 132;">
+                                    <div class="img"></div><span class="card-text">Expert System</span>
+                                </div>
+                                <div class="rotating-card" style="--index: 1; --color-card: 54, 162, 235;">
+                                    <div class="img"></div><span class="card-text">End-to-End</span>
+                                </div>
+                                <div class="rotating-card" style="--index: 2; --color-card: 255, 206, 86;">
+                                    <div class="img"></div><span class="card-text">Integrated Management</span>
+                                </div>
+                                <div class="rotating-card" style="--index: 3; --color-card: 75, 192, 192;">
+                                    <div class="img"></div><span class="card-text">Physical Infrastructure</span>
+                                </div>
+                                <div class="rotating-card" style="--index: 4; --color-card: 153, 102, 255;">
+                                    <div class="img"></div><span class="card-text">Custom Solution</span>
+                                </div>
+                                <div class="rotating-card" style="--index: 5; --color-card: 255, 159, 64;">
+                                    <div class="img"></div><span class="card-text">Certified Capabilities</span>
+                                </div>
+                                <div class="rotating-card" style="--index: 6; --color-card: 255, 99, 132;">
+                                    <div class="img"></div><span class="card-text">RSS-Fab</span>
+                                </div>
+                                <div class="rotating-card" style="--index: 7; --color-card: 54, 162, 235;">
+                                    <div class="img"></div><span class="card-text">Field Execution</span>
+                                </div>
+                                <div class="rotating-card" style="--index: 8; --color-card: 255, 206, 86;">
+                                    <div class="img"></div><span class="card-text">Precision Analysis</span>
+                                </div>
+                                <div class="rotating-card" style="--index: 9; --color-card: 75, 192, 192;">
+                                    <div class="img"></div><span class="card-text">Data Production</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-3 text-right fade-in flex flex-col justify-center"
+                        style="transition-delay: 200ms;">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-6 text-gray-900">아이디어를 현실로 만드는 R&D 플랫폼</h2>
+                        <p class="text-lg md:text-xl leading-loose text-gray-700">
+                            R&D 플랫폼, RSS는 연구자의 '위대한 아이디어'에 우리가 보유한 <strong class="text-blue-600"><br>압도적인 인프라(장비/시설),
+                                35년의 독보적인 경험과<br>노하우,그리고 전문가 집단(전문인력)</strong>을 결합하여,<br>불가능했던 시너지를 창출하고 아이디어를<br>가장 강력한
+                            현실로 만듭니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- [섹션 4] The Proof Section -->
+        <section id="proof" class="py-20 px-4">
+            <div class="max-w-6xl mx-auto">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-4 text-center">
+                    <div class="p-4 fade-in">
+                        <p class="text-5xl font-extrabold text-blue-600">35+</p>
+                        <p class="mt-2 text-lg font-semibold">Years of Experience</p>
+                    </div>
+                    <div class="p-4 fade-in">
+                        <p class="text-5xl font-extrabold text-blue-600">60+</p>
+                        <p class="mt-2 text-lg font-semibold">Professional Experts</p>
+                    </div>
+                    <div class="p-4 fade-in">
+                        <p class="text-5xl font-extrabold text-blue-600">500+</p>
+                        <p class="mt-2 text-lg font-semibold">Instruments & Facilities</p>
+                    </div>
+                    <div class="p-4 fade-in">
+                        <p class="text-5xl font-extrabold text-blue-600">30,000+</p>
+                        <p class="mt-2 text-lg font-semibold">Successful Projects</p>
+                    </div>
+                    <div class="p-4 fade-in">
+                        <p class="text-5xl font-extrabold text-blue-600">5</p>
+                        <p class="mt-2 text-lg font-semibold">Major Environmental Licenses</p>
+                    </div>
+                    <div class="p-4 fade-in">
+                        <p class="text-5xl font-extrabold text-blue-600">5+</p>
+                        <p class="mt-2 text-lg font-semibold">Governmental Awards</p>
+                    </div>
+                    <div class="p-4 fade-in flex flex-col justify-center items-center">
+                        <p class="text-3xl font-extrabold text-blue-600 leading-tight">Custom Fabrication</p>
+                        <p class="mt-2 text-lg font-semibold">(RSS-Fab)</p>
+                    </div>
+                    <div class="p-4 fade-in flex flex-col justify-center items-center">
+                        <p class="text-3xl font-extrabold text-blue-600 leading-tight">External Advisory</p>
+                        <p class="mt-2 text-lg font-semibold">Network</p>
+                    </div>
+                </div>
+                <div class="mt-16 text-center">
+                    <div class="space-y-5">
+                        <div class="auto-slider" style="--width: 200px; --height: 230px; --quantity: 10;">
+                            <div class="list">
+                                <div class="item" style="--position: 1"><img src="https://i.imgur.com/QTFSJAy.jpeg"
+                                        alt="Image 1"></div>
+                                <div class="item" style="--position: 2"><img src="https://i.imgur.com/eNlFhit.jpeg"
+                                        alt="Image 2"></div>
+                                <div class="item" style="--position: 3"><img src="https://i.imgur.com/ygbRXks.jpeg"
+                                        alt="Image 3"></div>
+                                <div class="item" style="--position: 4"><img src="https://i.imgur.com/yiG326c.jpeg"
+                                        alt="Image 4"></div>
+                                <div class="item" style="--position: 5"><img src="https://i.imgur.com/Om2pl7y.jpeg"
+                                        alt="Image 5"></div>
+                                <div class="item" style="--position: 6"><img src="https://i.imgur.com/QTFSJAy.jpeg"
+                                        alt="Image 6"></div>
+                                <div class="item" style="--position: 7"><img src="https://i.imgur.com/eNlFhit.jpeg"
+                                        alt="Image 7"></div>
+                                <div class="item" style="--position: 8"><img src="https://i.imgur.com/ygbRXks.jpeg"
+                                        alt="Image 8"></div>
+                                <div class="item" style="--position: 9"><img src="https://i.imgur.com/yiG326c.jpeg"
+                                        alt="Image 9"></div>
+                                <div class="item" style="--position: 10"><img src="https://i.imgur.com/Om2pl7y.jpeg"
+                                        alt="Image 10"></div>
+                            </div>
+                        </div>
+                        <div class="auto-slider" reverse="true"
+                            style="--width: 250px; --height: 100px; --quantity: 10;">
+                            <div class="list">
+                                <div class="item" style="--position: 1"><img src="https://i.imgur.com/jHwxxRh.png"
+                                        alt="New Image 1"></div>
+                                <div class="item" style="--position: 2"><img src="https://i.imgur.com/mtJeqjs.jpeg"
+                                        alt="New Image 2"></div>
+                                <div class="item" style="--position: 3"><img src="https://i.imgur.com/x9ZtKj6.png"
+                                        alt="New Image 3"></div>
+                                <div class="item" style="--position: 4"><img src="https://i.imgur.com/b5QQn0F.png"
+                                        alt="New Image 4"></div>
+                                <div class="item" style="--position: 5"><img src="https://i.imgur.com/VeJLeen.jpeg"
+                                        alt="New Image 5"></div>
+                                <div class="item" style="--position: 6"><img src="https://i.imgur.com/jHwxxRh.png"
+                                        alt="New Image 1"></div>
+                                <div class="item" style="--position: 7"><img src="https://i.imgur.com/mtJeqjs.jpeg"
+                                        alt="New Image 2"></div>
+                                <div class="item" style="--position: 8"><img src="https://i.imgur.com/x9ZtKj6.png"
+                                        alt="New Image 3"></div>
+                                <div class="item" style="--position: 9"><img src="https://i.imgur.com/b5QQn0F.png"
+                                        alt="New Image 4"></div>
+                                <div class="item" style="--position: 10"><img src="https://i.imgur.com/VeJLeen.jpeg"
+                                        alt="New Image 5"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- [섹션 5] The Process Section -->
+        <section id="process" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4">
+                <h2 class="text-3xl md:text-4xl font-black text-center mb-20">상상 속 아이디어를, 현실의 데이터로 만드는 5단계 프로세스</h2>
+                <!-- Timeline Container -->
+                <div id="timeline-container" class="relative">
+                    <!-- Center Line -->
+                    <div class="absolute left-1/2 top-0 h-full w-0.5 bg-gray-300 -translate-x-1/2"></div>
+                    <!-- Process List -->
+                    <div class="space-y-24">
+
+                        <!-- 프로세스 1 -->
+                        <div class="timeline-item relative grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                            <div class="text-left md:pr-16">
+                                <h3 class="text-2xl font-bold text-gray-900">Step 1: 사전조사</h3>
+                                <p class="mt-3 text-lg text-gray-700 leading-relaxed">
+                                    기초 데이터 수집 및 분석, 사전 현장조사를 통해<br>최적의 연구 지역을 선정하고 명확한 방향을 설정합니다.
+                                </p>
+                            </div>
+                            <div class="md:pl-16">
+                                <div class="process-card">
+                                    <img class="process-card__image" src="https://i.imgur.com/qN1YJye.jpeg"
+                                        alt="사전조사 이미지">
+                                    <div class="process-card__content">
+                                        <h3 class="process-card__title">Preliminary Survey</h3>
+                                        <p class="process-card__description">기초 데이터 수집 및 분석, 사전 현장조사를 통해 최적의 연구 지역을 선정하고
+                                            명확한 방향을 설정하고 아이디어 구체화, 사전조사, 데이터 분석, 최적의 연구 지역 선정 등 연구의 전체적인 방향과 전략을 수립하는
+                                            청사진을 그립니다.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="timeline-dot absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 hidden md:block">
+                                <span class="timeline-dot-inner size-4 shrink-0 rounded-full ring-4 ring-white"></span>
+                            </div>
+                        </div>
+
+                        <!-- 프로세스 2 -->
+                        <div class="timeline-item relative grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                            <div class="text-right md:pl-16 md:order-last">
+                                <h3 class="text-2xl font-bold text-gray-900">Step 2: 현장조사 및 설계·제작</h3>
+                                <p class="mt-3 text-lg text-gray-700 leading-relaxed">
+                                    상세 현장조사로 세부 위치를 확정하고, 재료 선정,<br>구매부터 구조물 설계, 최종 제작까지 모두 수행합니다.
+                                </p>
+                            </div>
+                            <div class="md:pr-16 md:order-first">
+                                <div class="process-card">
+                                    <img class="process-card__image" src="https://i.imgur.com/rugAWTk.jpeg"
+                                        alt="현장조사 및 설계·제작 이미지">
+                                    <div class="process-card__content">
+                                        <h3 class="process-card__title">On-site Investigation & Design·Fabrication</h3>
+                                        <p class="process-card__description">상세 현장조사로 세부 위치를 확정하고, 재료 선정 및 구매부터 구조물 설계,
+                                            최종 제작까지 모두 수행합니다. 연구에 필요한 구조물/시제품의 맞춤 설계 및 제작, 인허가 및유관기관 협의, 그리고 현장 총괄, 샘플링
+                                            및 측정 등 모든 현장 업무를 책임지고 실행합니다.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="timeline-dot absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 hidden md:block">
+                                <span class="timeline-dot-inner size-4 shrink-0 rounded-full ring-4 ring-white"></span>
+                            </div>
+                        </div>
+
+                        <!-- 프로세스 3 -->
+                        <div class="timeline-item relative grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                            <div class="text-left md:pr-16">
+                                <h3 class="text-2xl font-bold text-gray-900">Step 3: 인허가 및 유관기관 협의 지원</h3>
+                                <p class="mt-3 text-lg text-gray-700 leading-relaxed">
+                                    35년의 노하우로, 연구에 필요한 복잡한 인허가,<br>유관기관과의 협의를 원활하게 지원합니다.
+                                </p>
+                            </div>
+                            <div class="md:pl-16">
+                                <div class="process-card">
+                                    <img class="process-card__image" src="https://i.imgur.com/lRrifmB.jpeg"
+                                        alt="인허가 및 유관기관 협의 지원 이미지">
+                                    <div class="process-card__content">
+                                        <h3 class="process-card__title">Permit & Agency Coordination Support</h3>
+                                        <p class="process-card__description">35년의 노하우로, 연구에 필요한 복잡한 인허가 및 유관기관과의 협의를
+                                            원활하게 지원합니다.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="timeline-dot absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 hidden md:block">
+                                <span class="timeline-dot-inner size-4 shrink-0 rounded-full ring-4 ring-white"></span>
+                            </div>
+                        </div>
+
+                        <!-- 프로세스 4 -->
+                        <div class="timeline-item relative grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                            <div class="text-right md:pl-16 md:order-last">
+                                <h3 class="text-2xl font-bold text-gray-900">Step 4: 현장측정</h3>
+                                <p class="mt-3 text-lg text-gray-700 leading-relaxed">
+                                    구조물 설치부터 전문 인력 지원, 외부 업체 섭외,<br>현장 총괄 관리 및 모니터링까지 모든 현장 업무를 실행합니다.
+                                </p>
+                            </div>
+                            <div class="md:pr-16 md:order-first">
+                                <div class="process-card">
+                                    <img class="process-card__image" src="https://i.imgur.com/vb9Fxin.jpeg"
+                                        alt="현장측정 이미지">
+                                    <div class="process-card__content">
+                                        <h3 class="process-card__title">Field Measurement</h3>
+                                        <p class="process-card__description">구조물 설치부터 공식적인 자격을 갖춘 전문 인력 지원, 외부 업체 섭외,
+                                            그리고 현장 총괄 관리 및 모니터링까지 모든 현장 업무를 직접 모니터링하고 조율하여 빈틈 없이 실행합니다.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="timeline-dot absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 hidden md:block">
+                                <span class="timeline-dot-inner size-4 shrink-0 rounded-full ring-4 ring-white"></span>
+                            </div>
+                        </div>
+
+                        <!-- 프로세스 5 -->
+                        <div class="timeline-item relative grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                            <div class="text-left md:pr-16">
+                                <h3 class="text-2xl font-bold text-gray-900">Step 5: 시험분석</h3>
+                                <p class="mt-3 text-lg text-gray-700 leading-relaxed">
+                                    현장에서 확보한 대량의 시료를, 최신 정밀 분석기기를<br>활용한 고도 시험분석을 통해 최종 데이터로 완성합니다.
+                                </p>
+                            </div>
+                            <div class="md:pl-16">
+                                <div class="process-card">
+                                    <img class="process-card__image" src="https://i.imgur.com/ESjPAxd.jpeg"
+                                        alt="시험분석 이미지">
+                                    <div class="process-card__content">
+                                        <h3 class="process-card__title">Smart Lab Analysis</h3>
+                                        <p class="process-card__description">현장에서 확보된 시료를 'Smart Lab'의 최신 정밀 분석기기를 통해
+                                            신뢰도 높은 데이터로 생산합니다. 국제숙련도 최우수 기관으로서의 역량이 모든 데이터의 정확성을 보증합니다.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="timeline-dot absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 hidden md:block">
+                                <span class="timeline-dot-inner size-4 shrink-0 rounded-full ring-4 ring-white"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- [섹션 6] The Benefit Section -->
+        <section id="benefit" class="py-20 px-4 bg-white">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="relative z-10 text-3xl md:text-4xl font-bold text-center mb-16">연구의 모든 한계를 <span
+                        class="highlight">넘어서다</span></h2>
+                <div class="benefit-card-container">
+                    <!-- 카드 1 -->
+                    <div class="benefit-card">
+                        <div class="blob"></div>
+                        <div class="bg">
+                            <h3 class="card-title">연구 실행력 <span class="highlight">극대화</span></h3>
+                            <p class="card-description">당신의 아이디어를 상상에 그치지 않고 가장 확실한 현실로 만듭니다.</p>
+                        </div>
+                    </div>
+                    <!-- 카드 2 -->
+                    <div class="benefit-card">
+                        <div class="blob"></div>
+                        <div class="bg">
+                            <h3 class="card-title">성공 경로 <span class="highlight">최적화</span></h3>
+                            <p class="card-description">모든 불확실성과 시행착오를 제거하여, 가장 효율적인 경로로 최고의 성과에 도달하도록 돕습니다.</p>
+                        </div>
+                    </div>
+                    <!-- 카드 3 -->
+                    <div class="benefit-card">
+                        <div class="blob"></div>
+                        <div class="bg">
+                            <h3 class="card-title">연구 역량 <span class="highlight">확장</span></h3>
+                            <p class="card-description">당신의 전문성에 우리의 전문성을 더하여, 이전에는 불가능했던 새로운 차원의 융합 연구를 가능하게 합니다.</p>
+                        </div>
+                    </div>
+                    <!-- 카드 4 -->
+                    <div class="benefit-card">
+                        <div class="blob"></div>
+                        <div class="bg">
+                            <h3 class="card-title">핵심 가치 <span class="highlight">집중</span></h3>
+                            <p class="card-description">연구 외적인 모든 것을 책임짐으로써, 당신의 시간과 에너지를 오직 '위대한 발견'이라는 연구의 본질에만 쏟아부을 수
+                                있는 환경을 만듭니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- [섹션 7] For Whom Section -->
+        <section id="for-whom" class="py-20 px-4 bg-white">
+            <div class="max-w-6xl mx-auto">
+                <div class="bg-white p-8 md:p-12 rounded-2xl">
+                    <h2 class="text-4xl md:text-5xl font-bold text-left mb-16">당신을 위한 R&D 플랫폼</h2>
+                    <div class="space-y-8">
+                        <!-- 항목 1 -->
+                        <div class="grid grid-cols-3 gap-8 items-center">
+                            <div class="col-span-1 flex justify-center">
+                                <div class="organic-card">
+                                    <h3 class="organic-card-title">대학교 및<br>국책 연구소</h3>
+                                </div>
+                            </div>
+                            <div class="col-span-2">
+                                <h2 class="text-3xl font-bold text-gray-700">연구의 깊이를 더하다.</h2>
+                                <p class="mt-2 text-base text-gray-600">부족한 인력과 현장 경험의 한계를 넘어, 논문과 연구 성과의 질적 수준을 한
+                                    단계<br>높이고자 하는 연구자.</p>
+                            </div>
+                        </div>
+                        <!-- 항목 2 -->
+                        <div class="grid grid-cols-3 gap-8 items-center ml-16">
+                            <div class="col-span-1 flex justify-center">
+                                <div class="organic-card">
+                                    <h3 class="organic-card-title">기업 부설<br>연구소</h3>
+                                </div>
+                            </div>
+                            <div class="col-span-2">
+                                <h2 class="text-3xl font-bold text-gray-700">시장 출시를 앞당기다.</h2>
+                                <p class="mt-2 text-base text-gray-600">신제품 개발 및 기술 검증에 필요한 데이터를 신속하고 정확하게 확보하여, 시장
+                                    출시까지의<br>시간을 획기적으로 단축시키고자 하는 기업.</p>
+                            </div>
+                        </div>
+                        <!-- 항목 3 -->
+                        <div class="grid grid-cols-3 gap-8 items-center ml-32">
+                            <div class="col-span-1 flex justify-center">
+                                <div class="organic-card">
+                                    <h3 class="organic-card-title">R&D<br>스타트업</h3>
+                                </div>
+                            </div>
+                            <div class="col-span-2">
+                                <h2 class="text-3xl font-bold text-gray-700">아이디어를 즉시 실현하다.</h2>
+                                <p class="mt-2 text-base text-gray-600">초기 투자 비용 부담 없이, 대기업 수준의 최첨단 연구 인프라를 즉시 활용하여
+                                    아이디어를 가장 빠른 현실로 만들고자 하는 혁신가.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- [섹션 8] Final CTA Section -->
+        <section id="contact" class="py-20 px-4 text-center bg-gray-900 text-white">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-black leading-tight mb-4">
+                    당신의 가장 위대한 연구, 그 첫걸음
+                </h2>
+                <p class="text-xl md:text-2xl mb-8">
+                    연구지원솔루션(RSS)과 함께 하십시오.
+                </p>
+                <a href="#"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-10 rounded-full text-xl transition duration-300">
+                    지금 바로 프로젝트 상담하기
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8 px-4 text-center">
+        <p>&copy; 2025 (주)청명기연환경_황연걸. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const video = document.getElementById('hero-video');
+            const heroContent = document.getElementById('hero-content');
+            const cardContainer = document.getElementById('card-container');
+            const overlay = document.getElementById('video-overlay');
+            const buttons = [
+                document.getElementById('btn-contact'),
+                document.getElementById('btn-about')
+            ];
+
+            if (video) {
+                video.playbackRate = 0.9;
+                video.onended = function () {
+                    // Fade out video and its overlay
+                    video.style.opacity = '0';
+                    overlay.style.opacity = '0';
+
+                    // Fade in the card container
+                    cardContainer.style.opacity = '1';
+
+                    // Change button styles
+                    buttons.forEach(button => {
+                        if (button) {
+                            button.classList.remove('btn-initial');
+                            button.classList.add('btn-final');
+                            const span = button.querySelector('span');
+                            if (span) {
+                                button.removeChild(span);
+                            }
+                        }
+                    });
+
+                    setTimeout(() => {
+                        video.style.display = 'none';
+                    }, 1000); // Match transition duration
+                };
+            }
+
+            // Intersection Observer for other sections
+            const faders = document.querySelectorAll('.fade-in:not(.timeline-item)'); // Exclude timeline items from this observer
+            const appearOptions = { threshold: 0.2, rootMargin: "0px 0px -50px 0px" };
+            const observer = new IntersectionObserver(function (entries, observer) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                });
+            }, appearOptions);
+
+            faders.forEach(fader => observer.observe(fader));
+
+            // --- Timeline Animation ---
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            const timelineDots = document.querySelectorAll('.timeline-dot');
+
+            const timelineObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            timelineItems.forEach(item => {
+                timelineObserver.observe(item);
+            });
+
+            const handleScroll = () => {
+                const viewportHeight = window.innerHeight;
+                timelineDots.forEach((dot, index) => {
+                    const item = timelineItems[index];
+                    if (item) {
+                        const itemRect = item.getBoundingClientRect();
+                        if (itemRect.top + itemRect.height / 2 < viewportHeight / 2 + 50) {
+                            dot.classList.add('is-active');
+                        } else {
+                            dot.classList.remove('is-active');
+                        }
+                    }
+                });
+            };
+
+            window.addEventListener('scroll', handleScroll, { passive: true });
+            handleScroll();
+        });
+    </script>
+
+</body>
+
+</html>
