@@ -277,7 +277,6 @@
             width: 100%;
             height: var(--height);
             overflow: hidden;
-            mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
         }
 
         .auto-slider .list {
@@ -292,14 +291,14 @@
             height: var(--height);
             position: absolute;
             left: 100%;
-            animation: autoRun 15s linear infinite;
+            animation: autoRun 18s linear infinite;
             transition: filter 0.5s;
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             border: 1px solid #eee;
             background-color: white;
-            animation-delay: calc((15s / var(--quantity)) * (var(--position) - 1) - 15s) !important;
+            animation-delay: calc((18s / var(--quantity)) * (var(--position) - 1) - 18s) !important;
         }
 
         .auto-slider:not([reverse="true"]) .list .item img {
@@ -327,18 +326,9 @@
             }
         }
 
-        .auto-slider:hover .item {
-            animation-play-state: paused !important;
-            filter: grayscale(1);
-        }
-
-        .auto-slider .item:hover {
-            filter: grayscale(0);
-        }
-
         .auto-slider[reverse="true"] .item {
-            animation: reversePlay 15s linear infinite;
-            animation-delay: calc((15s / var(--quantity)) * (var(--position) - 1) - 15s) !important;
+            animation: reversePlay 18s linear infinite;
+            animation-delay: calc((18s / var(--quantity)) * (var(--position) - 1) - 18s) !important;
         }
 
         @keyframes reversePlay {
@@ -855,47 +845,83 @@
                 </div>
                 <div class="mt-16 text-center">
                     <div class="space-y-5">
-                        <div class="auto-slider" style="--width: 200px; --height: 230px; --quantity: 10;">
+                        <div class="auto-slider" style="--width: 200px; --height: 240px; --quantity: 19;">
                             <div class="list">
-                                <div class="item" style="--position: 1"><img src="https://i.imgur.com/QTFSJAy.jpeg"
+                                <div class="item" style="--position: 1"><img src="https://i.imgur.com/7WdtoUl.jpeg"
                                         alt="Image 1"
-                                        onerror="this.onerror=null;this.src='https://placehold.co/200x230/cccccc/ffffff?text=Image+1';">
+                                        onerror="this.onerror=null;this.src='https://placehold.co/200x240/cccccc/ffffff?text=Image+1';">
                                 </div>
-                                <div class="item" style="--position: 2"><img src="https://i.imgur.com/eNlFhit.jpeg"
+                                <div class="item" style="--position: 2"><img src="https://i.imgur.com/ofH2hBH.jpeg"
                                         alt="Image 2"
-                                        onerror="this.onerror=null;this.src='https://placehold.co/200x230/cccccc/ffffff?text=Image+2';">
+                                        onerror="this.onerror=null;this.src='https://placehold.co/200x240/cccccc/ffffff?text=Image+2';">
                                 </div>
-                                <div class="item" style="--position: 3"><img src="https://i.imgur.com/ygbRXks.jpeg"
+                                <div class="item" style="--position: 3"><img src="https://i.imgur.com/G8UDblu.jpeg"
                                         alt="Image 3"
-                                        onerror="this.onerror=null;this.src='https://placehold.co/200x230/cccccc/ffffff?text=Image+3';">
+                                        onerror="this.onerror=null;this.src='https://placehold.co/200x240/cccccc/ffffff?text=Image+3';">
                                 </div>
-                                <div class="item" style="--position: 4"><img src="https://i.imgur.com/yiG326c.jpeg"
+                                <div class="item" style="--position: 4"><img src="https://i.imgur.com/aP4iRfJ.jpeg"
                                         alt="Image 4"
-                                        onerror="this.onerror=null;this.src='https://placehold.co/200x230/cccccc/ffffff?text=Image+4';">
+                                        onerror="this.onerror=null;this.src='https://placehold.co/200x240/cccccc/ffffff?text=Image+4';">
                                 </div>
-                                <div class="item" style="--position: 5"><img src="https://i.imgur.com/Om2pl7y.jpeg"
+                                <div class="item" style="--position: 5"><img src="https://i.imgur.com/HerwNha.jpeg"
                                         alt="Image 5"
-                                        onerror="this.onerror=null;this.src='https://placehold.co/200x230/cccccc/ffffff?text=Image+5';">
+                                        onerror="this.onerror=null;this.src='https://placehold.co/200x240/cccccc/ffffff?text=Image+5';">
                                 </div>
-                                <div class="item" style="--position: 6"><img src="https://i.imgur.com/QTFSJAy.jpeg"
+                                <div class="item" style="--position: 6"><img src="https://i.imgur.com/yJN33WZ.jpeg"
                                         alt="Image 6"
-                                        onerror="this.onerror=null;this.src='https://placehold.co/200x230/cccccc/ffffff?text=Image+6';">
+                                        onerror="this.onerror=null;this.src='https://placehold.co/200x240/cccccc/ffffff?text=Image+6';">
                                 </div>
-                                <div class="item" style="--position: 7"><img src="https://i.imgur.com/eNlFhit.jpeg"
+                                <div class="item" style="--position: 7"><img src="https://i.imgur.com/yqJbRup.jpeg"
                                         alt="Image 7"
-                                        onerror="this.onerror=null;this.src='https://placehold.co/200x230/cccccc/ffffff?text=Image+7';">
+                                        onerror="this.onerror=null;this.src='https://placehold.co/200x240/cccccc/ffffff?text=Image+7';">
                                 </div>
-                                <div class="item" style="--position: 8"><img src="https://i.imgur.com/ygbRXks.jpeg"
+                                <div class="item" style="--position: 8"><img src="https://i.imgur.com/wH2lwgj.jpeg"
                                         alt="Image 8"
-                                        onerror="this.onerror=null;this.src='https://placehold.co/200x230/cccccc/ffffff?text=Image+8';">
+                                        onerror="this.onerror=null;this.src='https://placehold.co/200x240/cccccc/ffffff?text=Image+8';">
                                 </div>
-                                <div class="item" style="--position: 9"><img src="https://i.imgur.com/yiG326c.jpeg"
+                                <div class="item" style="--position: 9"><img src="https://i.imgur.com/PbepXPR.jpeg"
                                         alt="Image 9"
-                                        onerror="this.onerror=null;this.src='https://placehold.co/200x230/cccccc/ffffff?text=Image+9';">
+                                        onerror="this.onerror=null;this.src='https://placehold.co/200x240/cccccc/ffffff?text=Image+9';">
                                 </div>
-                                <div class="item" style="--position: 10"><img src="https://i.imgur.com/Om2pl7y.jpeg"
+                                <div class="item" style="--position: 10"><img src="https://i.imgur.com/0CB607b.jpeg"
                                         alt="Image 10"
-                                        onerror="this.onerror=null;this.src='https://placehold.co/200x230/cccccc/ffffff?text=Image+10';">
+                                        onerror="this.onerror=null;this.src='https://placehold.co/200x240/cccccc/ffffff?text=Image+10';">
+                                </div>
+                                <div class="item" style="--position: 11"><img src="https://i.imgur.com/wmVsvTA.png"
+                                        alt="Image 11"
+                                        onerror="this.onerror=null;this.src='https://placehold.co/200x240/cccccc/ffffff?text=Image+11';">
+                                </div>
+                                <div class="item" style="--position: 12"><img src="https://i.imgur.com/UZOclQZ.png"
+                                        alt="Image 12"
+                                        onerror="this.onerror=null;this.src='https://placehold.co/200x240/cccccc/ffffff?text=Image+12';">
+                                </div>
+                                <div class="item" style="--position: 13"><img src="https://i.imgur.com/YgkBA6v.jpeg"
+                                        alt="Image 13"
+                                        onerror="this.onerror=null;this.src='https://placehold.co/200x240/cccccc/ffffff?text=Image+13';">
+                                </div>
+                                <div class="item" style="--position: 14"><img src="https://i.imgur.com/OhLOZX3.jpeg"
+                                        alt="Image 14"
+                                        onerror="this.onerror=null;this.src='https://placehold.co/200x240/cccccc/ffffff?text=Image+14';">
+                                </div>
+                                <div class="item" style="--position: 15"><img src="https://i.imgur.com/bmJozqY.jpeg"
+                                        alt="Image 15"
+                                        onerror="this.onerror=null;this.src='https://placehold.co/200x240/cccccc/ffffff?text=Image+15';">
+                                </div>
+                                <div class="item" style="--position: 16"><img src="https://i.imgur.com/MQ1FuY8.jpeg"
+                                        alt="Image 16"
+                                        onerror="this.onerror=null;this.src='https://placehold.co/200x240/cccccc/ffffff?text=Image+16';">
+                                </div>
+                                <div class="item" style="--position: 17"><img src="https://i.imgur.com/tfejeOf.jpeg"
+                                        alt="Image 17"
+                                        onerror="this.onerror=null;this.src='https://placehold.co/200x240/cccccc/ffffff?text=Image+17';">
+                                </div>
+                                <div class="item" style="--position: 18"><img src="https://i.imgur.com/nWCoyfc.jpeg"
+                                        alt="Image 18"
+                                        onerror="this.onerror=null;this.src='https://placehold.co/200x240/cccccc/ffffff?text=Image+18';">
+                                </div>
+                                <div class="item" style="--position: 19"><img src="https://i.imgur.com/oiU29ng.jpeg"
+                                        alt="Image 19"
+                                        onerror="this.onerror=null;this.src='https://placehold.co/200x240/cccccc/ffffff?text=Image+19';">
                                 </div>
                             </div>
                         </div>
@@ -1324,5 +1350,6 @@
 </body>
 
 </html>
+
 
 
