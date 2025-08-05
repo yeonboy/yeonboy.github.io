@@ -659,6 +659,16 @@
             z-index: 2;
         }
 
+        .text-outline {
+            text-shadow:
+                -1px -1px 0 rgba(0, 0, 0, 0.8),
+                1px -1px 0 rgba(0, 0, 0, 0.8),
+                -1px 1px 0 rgba(0, 0, 0, 0.8),
+                1px 1px 0 rgba(0, 0, 0, 0.8),
+                2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+
         /* Responsive Adjustments */
         @media (max-width: 768px) {
             .rotating-card-inner {
@@ -717,9 +727,8 @@
                     style="text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">
                     머리 속 아이디어를,<br>논문 속 데이터로 실현시켜드립니다.
                 </h1>
-                <h3 class="text-2xl sm:text-3xl md:text-5xl font-bold mb-24 tracking-wider"
-                    style="text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">
-                    All-Inclusive R&D 플랫폼, 연구지원솔루션(RSS)
+                <h3 class="text-2xl sm:text-3xl md:text-5xl font-bold mb-24 tracking-wider">
+                    All-Inclusive R&D 플랫폼, <span class="text-outline">연구지원솔루션(RSS)</span>
                 </h3>
                 <div class="mt-0">
                     <a href="#contact" id="btn-contact" class="btn-initial mx-2">프로젝트 문의하기<span></span></a>
@@ -744,9 +753,9 @@
                 <div class="mt-16">
                     <p class="text-lg md:text-xl text-gray-800 font-semibold leading-relaxed relative fade-in"
                         style="top: -5px; transition-delay: 1000ms;">
-                        이 모든 질문은 결국 <strong class="text-blue-600">'경험'</strong>, <strong
-                            class="text-blue-600">'자원'</strong>, <strong class="text-blue-600">'통합 관리'</strong>의 부재라는 단
-                        하나의 거대한 장벽을 가리키고 있었습니다.
+                        이 모든 질문은 결국 <strong class="text-blue-600 text-xl md:text-2xl">'경험'</strong>, <strong
+                            class="text-blue-600 text-xl md:text-2xl">'자원'</strong>, <strong
+                            class="text-blue-600 text-xl md:text-2xl">'통합 관리'</strong>의 부재라는 단 하나의 거대한 장벽을 가리키고 있었습니다.
                     </p>
                 </div>
             </div>
@@ -834,13 +843,13 @@
                         <p class="mt-2 text-lg font-semibold">정부 수상 경험</p>
                     </div>
                     <div class="p-4 fade-in flex flex-col justify-center items-center">
-                        <p class="text-2xl sm:text-3xl font-extrabold text-blue-600 leading-tight">Custom Fabrication
+                        <p class="text-2xl sm:text-3xl font-extrabold text-blue-600 leading-tight">맞춤 설계 제작
                         </p>
-                        <p class="mt-2 text-lg font-semibold">(RSS-Fab)</p>
+                        <p class="mt-2 text-lg font-semibold">RSS-Fab</p>
                     </div>
                     <div class="p-4 fade-in flex flex-col justify-center items-center">
-                        <p class="text-2xl sm:text-3xl font-extrabold text-blue-600 leading-tight">External Advisory</p>
-                        <p class="mt-2 text-lg font-semibold">Network</p>
+                        <p class="text-2xl sm:text-3xl font-extrabold text-blue-600 leading-tight">외부자문 네트워크</p>
+                        <p class="mt-2 text-lg font-semibold">대학교/연구소</p>
                     </div>
                 </div>
                 <div class="mt-16 text-center">
@@ -1350,6 +1359,5 @@
 </body>
 
 </html>
-
 
 
